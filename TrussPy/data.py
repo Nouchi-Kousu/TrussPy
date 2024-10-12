@@ -64,14 +64,15 @@ def Calculation_Result_to_Visualization(calculation_result: Calculation_Result_D
         end = points[line['points'][1]]
         sigma = (euclidean([start['x'] + start['dx'], start['y'] + start['dy']],
                  [end['x'] + end['dx'], end['y'] + end['dy']]) - line['L']) / line['L'] * line['E']
-        return Line_Force(points=(line['points'][0], line['points'][1]), sigma=sigma)
+        return Line_Force(points=[line['points'][0], line['points'][1]], sigma=sigma)
 
     line_forces = [Line_to_Line_Force(line)
                    for line in calculation_result['lines']]
 
     visualization_data = Visualization_Data(
         points=calculation_result['points'].copy(),
-        lines=line_forces
+        lines=line_forces,
+        loads=calculation_result['loads']
     )
 
     return visualization_data

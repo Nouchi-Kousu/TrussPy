@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            @page {
+                size: A4;
+                margin: 20mm;
+            }
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .page {
+                page-break-after: always;
+            }
+            .content {
+                height: 100%;
+                box-sizing: border-box;
+            }
+        </style>
+        <title>A4 Size PDF Example</title>
+    </head>
+    <body>
+        <div class="content">
+            <h1>桁架计算结果报告</h1>
+            <p>123</p>
+        </div>
+        <div class="page"></div>
+        <div class="content">
+            <img src="./Figure_1.png" alt="1" />
+            <img src="./Figure_2.png" alt="1" />
+            {data}
+        </div>
+    </body>
+</html>
