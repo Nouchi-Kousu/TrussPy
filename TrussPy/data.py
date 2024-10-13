@@ -103,3 +103,47 @@ class Bidirectional_Map():
 
 if __name__ == '__main__':
     print('test')
+
+
+def txt_to_frontend_input_data(file_path: str) -> Frontend_Input_Data:
+    data: Frontend_Input_Data = {
+        'points': [],
+        'lines': [],
+        'loads': [],
+        'makings': []
+    }
+
+    with open(file_path, 'r') as f:
+        for line in f:
+            tokens = line.strip().split(',')
+            if tokens[0] == 'P':
+                # 解析点数据
+                if tokens[3] in ['0', '1', '2']:
+                    data['points'].append({
+                        'x': float(tokens[1]),
+                        'y': float(tokens[2]),
+                        'Constraint_Type': int(tokens[3]),
+                        'theta': float(tokens[4])
+                    })
+            elif tokens[0] == 'L':
+                # 解析杆件数据
+                data['lines'].append({
+                    'points': [int(tokens[1]), int(tokens[2])],
+                    'makingsIdx': int(tokens[3])
+                })
+            elif tokens[0] == 'M':
+                # 解析材料数据
+                data['makings'].append({
+                    'E': float(tokens[1]),
+                    'A': float(tokens[2]),
+                    'rho': float(tokens[3])
+                })
+            elif tokens[0] == 'F':
+                # 解析载荷数据
+                data['loads'].append({
+                    'point': int(tokens[1]),
+                    'Fx': float(tokens[2]),
+                    'Fy': float(tokens[3])
+                })
+
+    return data

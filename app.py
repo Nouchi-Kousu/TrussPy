@@ -32,29 +32,7 @@ from TrussPy import draw
 #         {'E': 48e5, 'A': 1, 'rho': 0}
 #     ]
 # }
-
-truss: Frontend_Input_Data = {
-    'points': [
-        Point(0, 0, 2),
-        Point(2, 0, 2),
-        Point(2, 2),
-        Point(0, 2)
-    ],
-    'lines': [
-        Frontend_Line([0, 3], 0),
-        Frontend_Line([2, 3], 0),
-        Frontend_Line([1, 2], 0),
-        Frontend_Line([1, 3], 0),
-        Frontend_Line([0, 2], 0)
-    ],
-    'loads': [
-        Load(3, 10, 0),
-        Load(2, 10, 0)
-    ],
-    'makings': [
-        {'E': 48e5, 'A': 1, 'rho': 0}
-    ]
-}
+truss = tp.txt_load('./test.txt')
 
 time_start = time()
 input_data = tp.prepare_frontend_input(truss)
@@ -72,4 +50,4 @@ print((time() - time_start)*1000)
 # draw.plot_truss(input_data)
 # draw.plot_truss_structure(result, 1000, 500)
 # plt.show()
-draw.pdf(result, input_data, './test.pdf', 5000, 80)
+draw.pdf(result, input_data, './test.pdf', 000, 200)
