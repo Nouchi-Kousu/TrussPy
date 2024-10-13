@@ -26,6 +26,7 @@ class Line(TypedDict):
     k: float
     E: float
     m: float
+    A: float
     theta: float
 
 

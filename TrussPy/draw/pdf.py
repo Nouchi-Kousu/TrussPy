@@ -10,8 +10,10 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
 from .draw import plot_truss, plot_truss_structure
+from ..data_types import Computational_Data, Visualization_Data
 
-pdfmetrics.registerFont(TTFont('SourceHanSerif', './ttf/SourceHanSerifCN-VF.ttf'))
+pdfmetrics.registerFont(
+    TTFont('SourceHanSerif', './ttf/SourceHanSerifCN-VF.ttf'))
 pdfmetrics.registerFont(TTFont('FangSong', './ttf/仿宋_GB2312.TTF'))
 
 styles = getSampleStyleSheet()
@@ -47,7 +49,7 @@ def create_three_line_table(data, col_widths=None):
 # 格式化数据为表格
 
 
-def format_data_as_three_line_table(calc_result_data, comp_data):
+def format_data_as_three_line_table(viz_data:Visualization_Data, comp_data:Computational_Data):
     elements = []
 
     # 点数据表头
@@ -56,7 +58,7 @@ def format_data_as_three_line_table(calc_result_data, comp_data):
 
     # 点数据三线表
     points_table_data = [['点编号', 'x 坐标', 'y 坐标', 'dx', 'dy', '约束类型', '旋转角度']]
-    for i, point in enumerate(calc_result_data['points']):
+    for i, point in enumerate(viz_data['points']):
         points_table_data.append([
             f'{i + 1}', f"{point['x']:.2e}", f"{point['y']:.2e}",
             f"{point['dx']:.2e}", f"{point['dy']:.2e}",
@@ -73,12 +75,12 @@ def format_data_as_three_line_table(calc_result_data, comp_data):
 
     # 杆件数据三线表（包含计算中的 k、E、m）
     lines_table_data = [
-        ['杆件编号', '连接点', '应力 σ', 'k', 'E', 'm']]
-    for i, line_force in enumerate(calc_result_data['lines']):
+        ['杆件编号', '连接点', '应力 σ', '轴力', 'k', 'E', 'm']]
+    for i, line_force in enumerate(viz_data['lines']):
         comp_line = comp_data['lines'][i]  # 从计算数据中获取对应的杆件
         lines_table_data.append([
             f'{i + 1}', f"{line_force['points'][0]+1}, {line_force['points'][1]+1}", f"{line_force['sigma']:.2e}",
-            f"{comp_line['k']:.2e}", f"{comp_line['E']:.2e}", f"{comp_line['m']:.2e}",
+            f"{line_force['sigma']*comp_line['A']:.2e}", f"{comp_line['k']:.2e}", f"{comp_line['E']:.2e}", f"{comp_line['m']:.2e}",
         ])
 
     lines_table = create_three_line_table(lines_table_data)
@@ -91,7 +93,7 @@ def format_data_as_three_line_table(calc_result_data, comp_data):
 
     # 载荷数据三线表
     loads_table_data = [['载荷编号', '作用点', 'Fx', 'Fy']]
-    for i, load in enumerate(calc_result_data['loads']):
+    for i, load in enumerate(viz_data['loads']):
         loads_table_data.append([
             f'{i + 1}', f"{load['point']+1}", f"{load['Fx']:.2e}", f"{load['Fy']:.2e}"
         ])
@@ -105,7 +107,7 @@ def format_data_as_three_line_table(calc_result_data, comp_data):
 # 生成 PDF 的函数
 
 
-def generate_pdf_with_title_images_tables(calc_result_data, comp_data, pdf_file: str, disp_scale: int = 100, load_scale: int = 100):
+def generate_pdf_with_title_images_tables(viz_data:Visualization_Data, comp_data:Computational_Data, pdf_file: str, disp_scale: int = 100, load_scale: int = 100):
     doc = SimpleDocTemplate(pdf_file, pagesize=A4,
                             leftMargin=20*mm, rightMargin=20*mm,
                             topMargin=20*mm, bottomMargin=20*mm)
@@ -126,7 +128,7 @@ def generate_pdf_with_title_images_tables(calc_result_data, comp_data, pdf_file:
     plt.close()
     img_buf1.seek(0)
     plot_truss_structure(
-        calc_result_data, disp_scale=disp_scale, load_scale=load_scale)
+        viz_data, disp_scale=disp_scale, load_scale=load_scale)
     img_buf2 = BytesIO()
     plt.savefig(img_buf2, format='png')
     plt.close()
@@ -144,7 +146,7 @@ def generate_pdf_with_title_images_tables(calc_result_data, comp_data, pdf_file:
     elements.append(Spacer(1, 12))
 
     # 格式化数据为表格
-    elements += format_data_as_three_line_table(calc_result_data, comp_data)
+    elements += format_data_as_three_line_table(viz_data, comp_data)
 
     # 生成 PDF
     doc.build(elements)
