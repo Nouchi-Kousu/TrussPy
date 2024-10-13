@@ -39,17 +39,19 @@ def plot_truss_structure(data: Visualization_Data, disp_scale: int = 100, load_s
     for load in data['loads']:
         point = points[load['point']]
         ax.arrow(point['x'] + point['dx'] * disp_scale, point['y'] + point['dy']
-                 * disp_scale, load['Fx'] / load_scale, load['Fy'] / load_scale)
+                 * disp_scale, load['Fx'] /
+                 load_scale, load['Fy'] / load_scale,
+                 head_width=0.05)
 
     # 设置坐标轴的比例和范围
     ax.autoscale()
     ax.margins(0.1)
     ax.set_aspect('equal')
 
-    # 添加颜色条
+    # 添加颜色条，设置fraction和pad以调整大小和位置
     sm = cm.ScalarMappable(cmap=cmap, norm=norm)
     sm.set_array(sigma_values)
-    cbar = plt.colorbar(sm, ax=ax)
+    cbar = plt.colorbar(sm, ax=ax, fraction=0.03, pad=0.02)  # 调整fraction和pad
     cbar.set_label('Sigma')
 
 
@@ -78,7 +80,8 @@ def plot_truss(data: Computational_Data, load_scale: int = 100):
     for load in data['loads']:
         point = points[load['point']]
         ax.arrow(point['x'], point['y'], load['Fx'] /
-                 load_scale, load['Fy'] / load_scale)
+                 load_scale, load['Fy'] / load_scale,
+                 head_width=0.05)
 
     # 设置坐标轴的比例和范围
     ax.autoscale()
