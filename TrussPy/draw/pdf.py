@@ -60,8 +60,8 @@ def format_data_as_three_line_table(viz_data:Visualization_Data, comp_data:Compu
     points_table_data = [['点编号', 'x 坐标', 'y 坐标', 'dx', 'dy', '约束类型', '旋转角度']]
     for i, point in enumerate(viz_data['points']):
         points_table_data.append([
-            f'{i + 1}', f"{point['x']:.2e}", f"{point['y']:.2e}",
-            f"{point['dx']:.2e}", f"{point['dy']:.2e}",
+            f'{i + 1}', f"{point['x']:.4e}", f"{point['y']:.4e}",
+            f"{point['dx']:.4e}", f"{point['dy']:.4e}",
             f"{point['Constraint_Type']}", f"{point['theta']}"
         ])
 
@@ -79,8 +79,8 @@ def format_data_as_three_line_table(viz_data:Visualization_Data, comp_data:Compu
     for i, line_force in enumerate(viz_data['lines']):
         comp_line = comp_data['lines'][i]  # 从计算数据中获取对应的杆件
         lines_table_data.append([
-            f'{i + 1}', f"{line_force['points'][0]+1}, {line_force['points'][1]+1}", f"{line_force['sigma']:.2e}",
-            f"{line_force['sigma']*comp_line['A']:.2e}", f"{comp_line['k']:.2e}", f"{comp_line['E']:.2e}", f"{comp_line['m']:.2e}",
+            f'{i + 1}', f"{line_force['points'][0]+1}, {line_force['points'][1]+1}", f"{line_force['sigma']:.4e}",
+            f"{line_force['sigma']*comp_line['A']:.4e}", f"{comp_line['k']:.4e}", f"{comp_line['E']:.4e}", f"{comp_line['m']:.4e}",
         ])
 
     lines_table = create_three_line_table(lines_table_data)
@@ -95,7 +95,7 @@ def format_data_as_three_line_table(viz_data:Visualization_Data, comp_data:Compu
     loads_table_data = [['载荷编号', '作用点', 'Fx', 'Fy']]
     for i, load in enumerate(viz_data['loads']):
         loads_table_data.append([
-            f'{i + 1}', f"{load['point']+1}", f"{load['Fx']:.2e}", f"{load['Fy']:.2e}"
+            f'{i + 1}', f"{load['point']+1}", f"{load['Fx']:.4e}", f"{load['Fy']:.4e}"
         ])
 
     loads_table = create_three_line_table(loads_table_data)
