@@ -32,7 +32,7 @@ from TrussPy import draw
 #         {'E': 48e5, 'A': 1, 'rho': 0}
 #     ]
 # }
-truss = tp.txt_load('./test.txt')
+truss = tp.txt_load('./必做题.inp')
 
 time_start = time()
 input_data = tp.prepare_frontend_input(truss)
@@ -47,7 +47,7 @@ result = tp.main(input_data)
 print(result)
 print((time() - time_start)*1000)
 
-# draw.plot_truss(input_data)
-# draw.plot_truss_structure(result, 1000, 500)
-# plt.show()
-draw.pdf(result, input_data, './test.pdf', 5000, 200)
+draw.plot_truss(input_data, 200)
+draw.plot_truss_structure(result, 1000, 200)
+plt.show()
+# draw.pdf(result, input_data, './test.pdf', 2000, 200)
