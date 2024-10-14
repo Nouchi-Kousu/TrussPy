@@ -20,7 +20,7 @@ def get_global_stiffness_matrix_and_gravity_load(input_data: Computational_Data,
                 esm = Get_Element_Stiffness_Matrix(line['k'], line['theta'])
                 global_stiffness_matrix[gsm_idx:gsm_idx +
                                         2, gsm_idx:gsm_idx+2] += esm
-                load_matrix[gsm_idx+1] += line['m'] * g
+                load_matrix[gsm_idx+1] -= line['m'] * g
 
             elif input_data['points'][point_idx]['Constraint_Type'] == 1:
                 esm = Get_Element_Stiffness_Matrix(
