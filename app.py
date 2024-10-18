@@ -3,7 +3,6 @@ from time import time
 from matplotlib import pyplot as plt
 import scipy
 import scipy.linalg
-from TrussPy import prepare_input, Point, Line, Load, Input_Data, Bidirectional_Map, Frontend_Line, Frontend_Input_Data, Visualization_Data
 from rich import print
 import TrussPy as tp
 import numpy as np
