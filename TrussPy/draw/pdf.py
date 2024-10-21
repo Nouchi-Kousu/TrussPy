@@ -1,4 +1,5 @@
 from io import BytesIO
+import time
 from matplotlib import pyplot as plt
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
@@ -49,7 +50,7 @@ def create_three_line_table(data, col_widths=None):
 # 格式化数据为表格
 
 
-def format_data_as_three_line_table(viz_data:Visualization_Data, comp_data:Computational_Data):
+def format_data_as_three_line_table(viz_data: Visualization_Data, comp_data: Computational_Data):
     elements = []
 
     # 点数据表头
@@ -107,7 +108,7 @@ def format_data_as_three_line_table(viz_data:Visualization_Data, comp_data:Compu
 # 生成 PDF 的函数
 
 
-def generate_pdf_with_title_images_tables(viz_data:Visualization_Data, comp_data:Computational_Data, pdf_file: str, disp_scale: int = 100, load_scale: int = 100):
+def generate_pdf_with_title_images_tables(viz_data: Visualization_Data, comp_data: Computational_Data, pdf_file: str, disp_scale: int = 100, load_scale: int = 100):
     doc = SimpleDocTemplate(pdf_file, pagesize=A4,
                             leftMargin=20*mm, rightMargin=20*mm,
                             topMargin=20*mm, bottomMargin=20*mm)
@@ -119,7 +120,8 @@ def generate_pdf_with_title_images_tables(viz_data:Visualization_Data, comp_data
     elements.append(Spacer(1, 12))
 
     # 添加小标题
-    elements.append(Paragraph('日期: 2024-10-13', style_centered))
+    elements.append(Paragraph(
+        f'日期: {time.strftime("%Y-%m-%d", time.localtime())}', style_centered))
     elements.append(Spacer(1, 12))
 
     plot_truss(comp_data, load_scale=load_scale)
